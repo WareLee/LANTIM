@@ -6,52 +6,52 @@ from model.entry.userhabit import *
 
 def auto_login_status():
     """返回用户之前关于登陆的设置信息user_habit"""
+    file = None
+    user_habit = None
+    p = os.path.split(os.path.realpath(__file__))[0]
     try:
-        file = open('user_habit.pickle', 'rb')
-        user_habit = pickle.loads(file)
-    except FileNotFoundError:
-        print('没有之前相关登陆信息。')
+        file = open(os.path.join(p,'user_habit.pickle'), 'rb')
+        user_habit = pickle.load(file)
+    except (FileNotFoundError, Exception):
+        print('没有之前相关登陆信息,或文件打开失败')
     finally:
-        file.close()
+        if file:
+            file.close()
 
     return user_habit
 
 
-def login(username, password):
+def login(username, password, record=False, remember=False, autologin=False):
     """验证用户密码:
+    record: 是否记录本次登陆到本地文件（如果成功的话）
+    当record==True时,应提供remember和autologin的值
     成功： 返回 user_info
     失败： 返回 None
     """
-    files = [f for f in os.listdir('.') if f.endswith('.pickle')]
+    p = os.path.split(os.path.realpath(__file__))[0]
+    files = [f for f in os.listdir(p) if f.endswith('.pickle')]
     for f in files:
         if f.startswith(username):
-            with open(f, 'rb') as ff:
-                user_info = pickle.loads(ff)
+            with open(os.path.join(p, f), 'rb') as ff:
+                user_info = pickle.load(ff)
             if user_info.password == password:
+                if record:
+                    _recordhabit(remember, autologin, username, password)
                 return user_info
 
     return None
 
 
+def clearhabit(user_habit):
+    """清理用户的本地登陆信息：只保留其账户名称,其余全放空"""
+    user_habit.password = ''
+    user_habit.autologin = False
+    user_habit.remember = False
+    user_habit.id = ''
 
-
-def lookupuser_info(username, userid):
-    """根据用户id,到数据库中查询用户信息
-    user_info(str:id,str:username,str:password,list:friends,dict:groups)
-    ==> user_info
-    """
-    try:
-        file = open('{}:{}.pickle'.format(username, userid), 'rb')
-        user_info = pickle.loads(file)
-    except FileNotFoundError:
-        print('The user #{} is not exists.'.format(userid))
-    finally:
-        file.close()
-
-    return user_info
-
-
-
+    p = os.path.split(os.path.realpath(__file__))[0]
+    with open(os.path.join(p, 'user_habit.pickle'), 'wb') as f:
+        pickle.dump(user_habit, f)
 
 
 def _recordhabit(remember, autologin, username, password):
@@ -60,5 +60,7 @@ def _recordhabit(remember, autologin, username, password):
     user_habit.autologin = autologin
     user_habit.username = username
     user_habit.password = password
-    with open('user_habit.pickle','wb') as f:
-        pickle.dump(user_habit,f)
+
+    p = os.path.split(os.path.realpath(__file__))[0]
+    with open(os.path.join(p,'user_habit.pickle'), 'wb') as f:
+        pickle.dump(user_habit, f)

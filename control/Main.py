@@ -5,6 +5,23 @@
 #       是：直接启动主界面窗口
 from model import login
 from view import frame
+from model.entry import userhabit
+import pickle
+from model.entry.userinfo import UserInfo
+
+
+def sample_userinfo(userinfo):
+    if not userinfo:
+        userinfo = UserInfo()
+        userinfo.id = 'abc'
+        userinfo.username = 'lee'
+        userinfo.password = '55558888'
+        userinfo.friends = ['abc', 'def', 'ghi']
+        userinfo.groups = {'group-a': ['abc', 'def', 'ghi']}
+
+    with open('../model/{}:{}.pickle'.format(userinfo.username, userinfo.id), 'wb') as f:
+        pickle.dump(userinfo, f)
+
 
 if __name__ == '__main__':
     """检查是否设置了自动登陆：
@@ -14,13 +31,18 @@ if __name__ == '__main__':
         否： 获取之前登陆时留下的信息user_haibit,传递给登陆窗口EnterWindow
     
     """
+    sample_userinfo(None)   # 手动添加用户数据信息
+
     user_habit = login.auto_login_status()
-    if user_habit.autologin:
-        user_info = login.login(user_habit.username, user_habit.password)
-        if user_info:
-            # TODO 基本完成,还需要细节
-            frame.UserWindow(user_info)
+
+    if user_habit:
+        if user_habit.autologin:
+            user_info = login.login(user_habit.username, user_habit.password)
+            if user_info:
+                frame.UserWindow(user_info)
+            else:
+                login.clearhabit(user_habit)
         else:
-            # TODO
-            login.clearhabit(user_habit)
-    frame.EnterWindow(user_habit)
+            frame.EnterWindow(user_habit)
+    else:
+        frame.EnterWindow(userhabit.UserHabit())
