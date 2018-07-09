@@ -3,6 +3,7 @@ from tkinter import messagebox
 import functools
 from model import login
 from model.entry import userinfo
+from model import request
 
 
 class EnterWindow(object):
@@ -147,7 +148,7 @@ class UserWindow():
 
         tk.mainloop()
 
-    # TODO
+    # TODO 请求服务器转发消息
     def _sendmess(self):
         data = self.inputbord.get(1.0, tk.END)
         data = '\n' + data + '\n'
