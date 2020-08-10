@@ -54,7 +54,7 @@ C. 多个指定用户群聊（就像QQ群）：是功能B的细化和拓展，�
 
 * __整体client-server架构设计:__
 
-  ![client-server架构设计](https://github.com/WareLee/LANTIM/client_server架构设计.png)
+  ![client-server架构设计](/home/warelee/workspaces/forgit/LANTIM/client_server架构设计.png)
 
   ## 版本更新计划：
 
