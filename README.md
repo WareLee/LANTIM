@@ -48,7 +48,7 @@ C. 多个指定用户群聊（就像QQ群）：是功能B的细化和拓展，�
 
 * __一对一单播逻辑__: 该逻辑的实现需要客户端和服务器端的配合。其服务器的设计采用TFTP的设计思想。
 
-  ![并发UDP服务器](/home/warelee/workspaces/forgit/LANTIM/并发udp服务器.png)
+  ![并发UDP服务器](https://github.com/WareLee/LANTIM/blob/master/%E5%B9%B6%E5%8F%91udp%E6%9C%8D%E5%8A%A1%E5%99%A8.png)
 
   > 注：图1截取自《unix网络编程 第二版》一书。
 
