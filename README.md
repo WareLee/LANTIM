@@ -35,6 +35,7 @@ C. 多个指定用户群聊（就像QQ群）：是功能B的细化和拓展，�
 
 
 ### 主界面：
+![主界面](https://github.com/WareLee/LANTIM/blob/master/159706943.jpg)
 
 
 
